@@ -1,4 +1,6 @@
 # Katakerm
+Originally written in Java as the key derivation algorithm of a cipher I work on, katakerm acts as a cryptographic hash function.
+
 A 256-bit output is produced for every input, as every byte of it
 is cascaded onto every other, and retrieving the original input is computationally impossible due to the combination of successive xors of the content bytes with each other, and with the results of trigonometric functions and multiplications on intermediate long integers.
 
