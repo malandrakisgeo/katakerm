@@ -4,7 +4,7 @@ is cascaded onto every other, and retrieving the original input is computational
 
 #### Assumptions
 1. The byte ordering is assumed to be **little endian**.
-2. All bytes and numbers are assumed to be **signed**.
+2. All chars and numbers are assumed to be **signed**.
 3. The rounding mode of decimal operations is assumed to be the default (equivalent to Java's HALF_UP)
 4. All doubles are rounded to **exactly 12** decimal values.
 
