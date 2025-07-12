@@ -1,3 +1,8 @@
+/*
+ *  Katakerm algorithm
+ *
+ *  Copyright (C) 2025 Georgios Malandrakis <malandrakisgeo@gmail.com>
+ */
 
 #include <iostream>
 #include <iomanip>
@@ -10,17 +15,16 @@
 using namespace std;
 
 
+
 void longToBytes(int64_t value, signed char buffer[8]){
-    /*
-     *    for (int i = 0; i < 8; i++)
-     *    {
-     *        buffer[i] = ((value >> (8 * i)) & 0XFF);
-}
-*/
+    /* for (int i = 0; i < 8; i++)
+        {
+           buffer[i] = ((value >> (8 * i)) & 0XFF);
+        } */
     std::memcpy(buffer, &value, sizeof(value));
 }
 
-int64_t bytesToLong(const signed char bytes[8]) { //Auto mas thn ekane, epeidh htan unsigned.
+int64_t bytesToLong(const signed char bytes[8]) {
     int64_t value;
     std::memcpy(&value, bytes, sizeof(value));
     return value;
@@ -63,10 +67,8 @@ void derive_key(string input, signed char key[4][8]){
             }else{
                 byte_sequence[i] = (signed char)0;
             }
-
         }
     }
-
 
 
     if (input_length > 32) {
@@ -81,7 +83,6 @@ void derive_key(string input, signed char key[4][8]){
             byte_sequence[j] ^= input.at(32 * parts_of_32_bytes + j);
             byte_sequence[j] ^= (signed char) (j & 0xFF);
         }
-
     }
 
 
@@ -94,7 +95,6 @@ void derive_key(string input, signed char key[4][8]){
             arrayOfArrays[i][j] =  (signed char)(a ^ byte_sequence[pointer] ^ ( xored_length));
             if (pointer > 0) {
                 arrayOfArrays[i][j] ^= (signed char)(byte_sequence[pointer - 1]);
-
             }
             ++pointer;
         }
@@ -126,7 +126,6 @@ void derive_key(string input, signed char key[4][8]){
 
     longToBytes(ginomeno, tox);
 
-
     for (int j = 0; j < 8; ++j) {
         tox[j] = (signed char) (tox[j] ^ trigonometric_1[j] ^ trigonometric_2[j]);
     }
@@ -138,7 +137,6 @@ void derive_key(string input, signed char key[4][8]){
             std::cout << ((int) key[i][j] ) << ' ';
         }
     }
-
 
 }
 
