@@ -45,8 +45,7 @@ They are then treated as simple 8-byte arrays for XOR operations.
 7. key[i][j] = T[i][j] XOR Z[j] XOR (i * i * i AND 0XFF)
 <br>
 
-The result is guaranteed to never be an array of zeros, and
-always change drastically for any input modification.
+The result is guaranteed to change drastically for any modification of the input.
 
 This is a key derivation algorithm with some of the properties of hash functions,
 and may be used as such. This is not a mathematically robust hash function. The percentage of existent 256bit combinations that are possible through it is uncertain. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers.
