@@ -85,27 +85,27 @@ void derive_key(string input, signed char key[4][8]){
     }
 
 
-    signed char arrayOfArrays[4][8] = {}; ;
+    signed char T[4][8] = {}; ;
 
     int pointer = 0;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 8; ++j) {
             signed char a = (signed char) ((i + 1) * (j + 1));
-            arrayOfArrays[i][j] = (signed char) (a ^ byte_sequence[pointer] ^ (xored_length));
+            T[i][j] = (signed char) (a ^ byte_sequence[pointer] ^ (xored_length));
             if (j > 0) {
-                arrayOfArrays[i][j] ^= (signed char) (arrayOfArrays[i][j - 1]);
+                T[i][j] ^= (signed char) (T[i][j - 1]);
             } else {
                 if (i > 0) {
-                    arrayOfArrays[i][j] ^= (signed char) (arrayOfArrays[i - 1][0]);
+                    T[i][j] ^= (signed char) (T[i - 1][0]);
                 }
             }
             ++pointer;
         }
     }
-    arrayOfArrays[0][0] ^= arrayOfArrays[3][7];
+    T[0][0] ^= T[3][7];
 
-    double tr = round_to_digits(cos(bytes_to_long(arrayOfArrays[0])), 12) + round_to_digits(sin(bytes_to_long(arrayOfArrays[1]) + bytes_to_long(arrayOfArrays[2])), 12);
-    double tr2 = round_to_digits(cos(bytes_to_long(arrayOfArrays[1]) + bytes_to_long(arrayOfArrays[2])), 12) + round_to_digits(sin(bytes_to_long(arrayOfArrays[3])), 12);
+    double tr = round_to_digits(cos(bytes_to_long(T[0])), 12) + round_to_digits(sin(bytes_to_long(T[1]) + bytes_to_long(T[2])), 12);
+    double tr2 = round_to_digits(cos(bytes_to_long(T[1]) + bytes_to_long(T[2])), 12) + round_to_digits(sin(bytes_to_long(T[3])), 12);
 
     signed char trigonometric_1[8] = {};
     signed char trigonometric_2[8] = {};
@@ -117,7 +117,7 @@ void derive_key(string input, signed char key[4][8]){
 
 
     for (int i = 0; i < 4; ++i) {
-        bitos[i] = (signed char) (arrayOfArrays[i][0] ^ arrayOfArrays[i][1] ^ arrayOfArrays[i][6] ^ arrayOfArrays[i][7]);
+        bitos[i] = (signed char) (T[i][0] ^ T[i][1] ^ T[i][6] ^ T[i][7]);
     }
 
     int64_t first = (int64_t) pow(bitos[0], 1) == 0 ? 1 : (int64_t) pow(bitos[0], 1);
@@ -137,7 +137,7 @@ void derive_key(string input, signed char key[4][8]){
     for (int i = 0; i < 4; ++i) {
         signed char position_leftmostbyte_cubed = (signed char) ((i * i * i) & 0xFF);
         for (int j = 0; j < 8; ++j) {
-            key[i][j] = (signed char) (arrayOfArrays[i][j] ^ tox[j] ^ position_leftmostbyte_cubed);
+            key[i][j] = (signed char) (T[i][j] ^ tox[j] ^ position_leftmostbyte_cubed);
             std::cout << ((int) key[i][j] ) << ' ';
         }
     }
