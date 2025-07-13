@@ -1,5 +1,5 @@
 /*
- *  Katakerm algorithm
+ *  Katakerm implementation
  *
  *  Copyright (C) 2025 Georgios Malandrakis <malandrakisgeo@gmail.com>
  */
@@ -15,8 +15,7 @@
 using namespace std;
 
 
-
-void longToBytes(int64_t value, signed char buffer[8]){
+void long_to_bytes(int64_t value, signed char buffer[8]){
     /* for (int i = 0; i < 8; i++)
         {
            buffer[i] = ((value >> (8 * i)) & 0XFF);
@@ -24,19 +23,19 @@ void longToBytes(int64_t value, signed char buffer[8]){
     std::memcpy(buffer, &value, sizeof(value));
 }
 
-int64_t bytesToLong(const signed char bytes[8]) {
+int64_t bytes_to_long(const signed char bytes[8]) {
     int64_t value;
     std::memcpy(&value, bytes, sizeof(value));
     return value;
 }
 
-double bytesToDouble(const signed char bytes[8]) { //AI-generated
+double bytes_to_double(const signed char bytes[8]) { //AI-generated
     double value;
     std::memcpy(&value, bytes, sizeof(value));
     return value;
 }
 
-void doubleToBytes(double value, signed char bytes[8]) { //AI-generated
+void double_to_bytes(double value, signed char bytes[8]) { //AI-generated
     std::memcpy(bytes, &value, sizeof(value));
 }
 
@@ -91,23 +90,28 @@ void derive_key(string input, signed char key[4][8]){
     int pointer = 0;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 8; ++j) {
-            signed char a =  (signed char)  ((i + 1)* (j + 1));
-            arrayOfArrays[i][j] =  (signed char)(a ^ byte_sequence[pointer] ^ ( xored_length));
-            if (pointer > 0) {
-                arrayOfArrays[i][j] ^= (signed char)(byte_sequence[pointer - 1]);
+            signed char a = (signed char) ((i + 1) * (j + 1));
+            arrayOfArrays[i][j] = (signed char) (a ^ byte_sequence[pointer] ^ (xored_length));
+            if (j > 0) {
+                arrayOfArrays[i][j] ^= (signed char) (arrayOfArrays[i][j - 1]);
+            } else {
+                if (i > 0) {
+                    arrayOfArrays[i][j] ^= (signed char) (arrayOfArrays[i - 1][0]);
+                }
             }
             ++pointer;
         }
     }
+    arrayOfArrays[0][0] ^= arrayOfArrays[3][7];
 
-    double tr = round_to_digits(cos(bytesToLong(arrayOfArrays[0])), 12) + round_to_digits(sin(bytesToLong(arrayOfArrays[1]) + bytesToLong(arrayOfArrays[2])), 12);
-    double tr2 = round_to_digits(cos(bytesToLong(arrayOfArrays[1]) + bytesToLong(arrayOfArrays[2])), 12) + round_to_digits(sin(bytesToLong(arrayOfArrays[3])), 12);
+    double tr = round_to_digits(cos(bytes_to_long(arrayOfArrays[0])), 12) + round_to_digits(sin(bytes_to_long(arrayOfArrays[1]) + bytes_to_long(arrayOfArrays[2])), 12);
+    double tr2 = round_to_digits(cos(bytes_to_long(arrayOfArrays[1]) + bytes_to_long(arrayOfArrays[2])), 12) + round_to_digits(sin(bytes_to_long(arrayOfArrays[3])), 12);
 
     signed char trigonometric_1[8] = {};
     signed char trigonometric_2[8] = {};
 
-    doubleToBytes(tr, trigonometric_1);
-    doubleToBytes(tr2, trigonometric_2);
+    double_to_bytes(tr, trigonometric_1);
+    double_to_bytes(tr2, trigonometric_2);
 
     signed char bitos[4] = {};
 
@@ -124,7 +128,7 @@ void derive_key(string input, signed char key[4][8]){
 
     signed char tox [8]= {};
 
-    longToBytes(ginomeno, tox);
+    long_to_bytes(ginomeno, tox);
 
     for (int j = 0; j < 8; ++j) {
         tox[j] = (signed char) (tox[j] ^ trigonometric_1[j] ^ trigonometric_2[j]);
