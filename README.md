@@ -17,7 +17,7 @@ If any of those is not met, the algorithm can and will yield different keys than
 A verbal description of the algorithm follows.
 
 1. If the given input is less than 32bytes, it is copied to a 32byte array as is
-and padded with zeros. Else, it is broken into 32-byte chunks whose respective bytes are xored with each other, as well as with their chunk number. Let M the result of this operation.
+and padded with zeros. Else, it is broken into 32-byte chunks whose respective bytes are xored with each other, as well as with their chunk number (or individual position for the ones remaining). Let M the result of this operation.
 
 2) The original input length L used to deduce an xor-operation value X as follows:
 <br>for any input of length L <= 127, X=L.

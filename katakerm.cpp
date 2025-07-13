@@ -96,7 +96,7 @@ void derive_key(string input, signed char key[4][8]){
                 T[i][j] ^= (signed char) (T[i][j - 1]);
             } else {
                 if (i > 0) {
-                    T[i][j] ^= (signed char) (T[i - 1][0]);
+                    T[i][j] ^= (signed char) (T[i - 1][7]);
                 }
             }
             ++pointer;
