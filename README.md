@@ -1,5 +1,5 @@
 # Katakerm
-Originally written in Java as the key derivation algorithm of a cipher I work on, katakerm acts as a cryptographic hash function.
+Originally written in Java as the key derivation algorithm of a cipher I work on, katakerm has the core properties of cryptographic hash functions.
 
 A 256-bit output is produced for every input, as every byte of it
 is cascaded onto every other, and retrieving the original input is computationally impossible due to the combination of successive xors of the content bytes with each other, and with the results of trigonometric functions and multiplications on intermediate long integers.
@@ -48,6 +48,6 @@ They are then treated as simple 8-byte arrays for XOR operations.
 The result is guaranteed to change drastically for any modification of the input, and it 
 is impossible to deduce the original input from an output.
 
-This was originally a key derivation algorithm, but having some of the properties of hash functions, and can be used as such too. This is not a mathematically robust hash function. The percentage of existent 256bit combinations that are possible through it is uncertain. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers.
+This was originally a key derivation algorithm, but having some of the properties of hash functions, and may be used as such too. This is not a mathematically robust hash function. The percentage of existent 256bit combinations that are possible through it is uncertain, and inputs whose length is a multiple of 32 can produce the same digest if two or more 32byte chunks are carefully rearranged. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers of varying lengths.
 
 
