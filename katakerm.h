@@ -1,0 +1,1 @@
+void derive_key(signed char input[], int input_length, signed char key[4][8]);

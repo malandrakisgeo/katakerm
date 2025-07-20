@@ -8,7 +8,7 @@ is cascaded onto every other, and retrieving the original input is computational
 1. The byte ordering is assumed to be **little endian**.
 2. All chars and numbers are assumed to be **signed**.
 3. The rounding mode of decimal operations is assumed to be the default (equivalent to Java's HALF_UP)
-4. All doubles are rounded to **exactly 12** decimal values.
+4. All doubles are rounded to **exactly 12** decimal values before being used in any calculation.
 
 If any of those is not met, the algorithm can and will yield different keys than meant to.
 
@@ -16,8 +16,15 @@ If any of those is not met, the algorithm can and will yield different keys than
 ### The algorithm
 A verbal description of the algorithm follows.
 
-1. If the given input is less than 32bytes, it is copied to a 32byte array as is
-and padded with zeros. Else, it is broken into 32-byte chunks whose respective bytes are xored with each other, as well as with their chunk number (or individual position for the ones remaining). Let M the result of this operation.
+1. If the given input is shorter than 32bytes, it is copied to a 32byte array as is
+and padded with zeros. If it is exactly 32 bytes, it is hashed as is. If longer than 32 bytes:
+<br>a. The first 32bytes are hashed as they are, let A the result.
+<br>b. For every next Nth part  of 32 bytes, let P, every 8 bytes of A are used to
+deduce signed longs, multiplied respectively by N, 4 * N, 9 * N, and 16 * N, let the results H,J,K,L respectively. 
+All bytes of P are xored with the corresponding byte of A, as well as with the mod 255 of 
+their exact position in the input. The results are in turn converted to unsigned long integers, and multiplied by H,J,K,L respectively. The results are XORed with A and stored into A. 
+<br>c. The last remaining mod32 bytes, if any, are xored onto A as they are.
+The result A is hereby used as the input.
 
 2) The original input length L used to deduce an xor-operation value X as follows:
 <br>for any input of length L <= 127, X=L.
@@ -48,6 +55,9 @@ They are then treated as simple 8-byte arrays for XOR operations.
 The result is guaranteed to change drastically for any modification of the input, and it 
 is impossible to deduce the original input from an output.
 
-This was originally a key derivation algorithm, but having some of the properties of hash functions, and may be used as such too. This is not a mathematically robust hash function. The percentage of existent 256bit combinations that are possible through it is uncertain, and inputs whose length is a multiple of 32 can produce the same digest if two or more 32byte chunks are carefully rearranged. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers of varying lengths.
+This was originally a key derivation algorithm, but having some of the properties of hash functions, it may be used as such too.  
+
+It is important to note that the percentage of existent 256bit combinations that are possible through it is uncertain. The inputs may (or may not) be used to produce
+identical digests after careful manipulation. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers.
 
 
