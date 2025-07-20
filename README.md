@@ -57,7 +57,6 @@ is impossible to deduce the original input from an output.
 
 This was originally a key derivation algorithm, but having some of the properties of hash functions, it may be used as such too.  
 
-It is important to note that the percentage of existent 256bit combinations that are possible through it is uncertain. The inputs may (or may not) be used to produce
+It is important to note that the percentage of existent 256bit combinations that are possible through it, is uncertain. The inputs may (or may not) produce
 identical digests after careful manipulation. Yet no collisions were noted for repeated automated tests of up to 50m randomly generated input strings and numbers.
-
 
