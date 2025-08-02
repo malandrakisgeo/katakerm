@@ -22,9 +22,9 @@ and padded with zeros. If it is exactly 32 bytes, it is hashed as is. If longer 
 <br>b. For every next Nth part  of 32 bytes, let P, every 8 bytes of A are used to
 deduce signed longs, multiplied respectively by N, 4 * N, 9 * N, and 16 * N, let the results H,J,K,L respectively. 
 All bytes of P are xored with the corresponding byte of A, as well as with the mod 255 of 
-their exact position in the input. The results are in turn converted to unsigned long integers, and multiplied by H,J,K,L respectively. The results are XORed with A and stored into A. 
-<br>c. The last remaining mod32 bytes, if any, are xored onto A as they are.
-The result A is hereby used as the input.
+their exact position in the input. The results are in turn converted to unsigned long integers, and multiplied by H,J,K,L respectively. The results are XORed with A and stored into M. 
+<br>c. The last remaining mod32 bytes, if any, are xored onto M as they are.
+The result M is hereby used as the input.
 
 2) The original input length L used to deduce an xor-operation value X as follows:
 <br>for any input of length L <= 127, X=L.
